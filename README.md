@@ -54,7 +54,7 @@ _exit:                          ; объявляем процедуру _exit
 
 section   .data                 ; в секции data объявляются "переменные"
 message default rel             ; объявляем message и помещаем туда сообщение
-        db		"Congrats! Everything is working OK!", 10, 0
+        db      "Congrats! Everything is working OK!", 10, 0
 len 	equ 	$-message       ; объявляем len и помещаем туда длину сообщения 
 ```
 
