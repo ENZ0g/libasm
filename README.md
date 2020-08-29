@@ -55,7 +55,7 @@ curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
 17  section   .data                 ; в секции data объявляются "переменные"
 18  message default rel             ; объявляем message и помещаем туда сообщение
 19          db      "Congrats! Everything is working OK!", 10, 0
-20  len 	equ 	$-message       ; объявляем len и помещаем туда длину сообщения 
+20  len     equ     $-message       ; объявляем len и помещаем туда длину сообщения 
 ```
 
 Для работы нашей программы ОС выделяет память, которая будет поделена на:
