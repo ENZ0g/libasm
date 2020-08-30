@@ -20,4 +20,3 @@ _ft_strcpy:
         mov [rdi+rax], byte 0
         mov rax, rdi
         ret
-    

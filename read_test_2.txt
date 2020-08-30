@@ -1,0 +1,9 @@
+All FLAGS registers contain the condition codes, flag bits that let the results of one machine-language
+instruction affect another instruction. Arithmetic and logical instructions set some or all of the flags,
+and conditional jump instructions take variable action based on the value of certain flags. For example,
+jz (Jump if Zero), jc (Jump if Carry), and jo (Jump if Overflow) depend on specific flags. Other conditional
+jumps test combinations of several flags.
+
+FLAGS registers can be moved from or to the stack. This is part of the job of saving and restoring processor
+context, against a routine such as an interrupt service routine whose changes to registers should not be seen
+by the calling code.

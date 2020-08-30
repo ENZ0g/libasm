@@ -1,4 +1,5 @@
-; u_int64_t   ft_strlen(char *str);
+; int ft_strlen(char *str);
+
 global _ft_strlen
 
 section .text
