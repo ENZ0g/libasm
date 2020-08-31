@@ -13,6 +13,9 @@
                     "instructions assume that a pointer in the EBX register points to "\
                     "a memory location in the DS segment.\n"
 
+#define COLGREEN    "\x1b[32m"
+#define COLRESET    "\x1b[0m"
+
 size_t  ft_strlen(const char *str);
 char    *ft_strcpy(char *dst, const char *str);
 int     ft_strcmp(const char *str1, const char *str2);
@@ -25,7 +28,7 @@ void    ft_strlen_test(void)
     int     len;
     char    *str;
 
-    puts("\n**** ft_strlen test ****\n");
+    puts("\n" COLGREEN "**** ft_strlen test ****" COLRESET "\n");
 
     str = "test string";
     len = ft_strlen(str);
@@ -53,7 +56,7 @@ void    ft_strcpy_test(void)
     char    *str;
     char    *dst;
 
-    puts("\n**** ft_strcpy test ****\n");
+    puts("\n" COLGREEN "**** ft_strcpy test ****" COLRESET "\n");
 
     str = "test string";
     dst = (char *)malloc(sizeof(char) * (strlen(str) + 1));
@@ -82,7 +85,7 @@ void    ft_strcmp_test()
     char    *str1;
     char    *str2;
 
-    puts("\n**** ft_strcmp test ****\n");
+    puts("\n" COLGREEN "**** ft_strcmp test ****" COLRESET "\n");
 
     str1 = "test";
     str2 = "test";
@@ -103,6 +106,16 @@ void    ft_strcmp_test()
     str2 = "test string";
     printf("cmp: %s -- %s\n", str1, str2);
     printf("std: %d --- my: %d\n\n", strcmp(str1, str2), ft_strcmp(str1, str2));
+
+    str1 = "";
+    str2 = "test string";
+    printf("cmp: %s -- %s\n", str1, str2);
+    printf("std: %d --- my: %d\n\n", strcmp(str1, str2), ft_strcmp(str1, str2));
+
+    str1 = "test";
+    str2 = "";
+    printf("cmp: %s -- %s\n", str1, str2);
+    printf("std: %d --- my: %d\n\n", strcmp(str1, str2), ft_strcmp(str1, str2));
 }
 
 void    ft_write_test(void)
@@ -112,7 +125,7 @@ void    ft_write_test(void)
     int     my;
     int     fd;
 
-    puts("\n**** ft_write test ****\n");
+    puts("\n" COLGREEN "**** ft_write test ****" COLRESET "\n");
 
     string = "test\n";
     std = write(1, string, strlen(string));
@@ -139,18 +152,18 @@ void    ft_write_test(void)
     my = ft_write(2, string, ft_strlen(string));
     printf("std: %d --- my: %d\n\n", std, my);
 
-    string = "test string\n";
+    string = "test file\n";
     printf("erno before open - %d\n", errno);   
-    fd = open("test.txt", O_RDONLY);
+    fd = open("test.txt", O_RDWR);
     printf("erno before ft_write - %d\n", errno);
-    my = ft_write(fd, string, 0);
+    my = ft_write(fd, string, strlen(string));
     printf("erno after - %d\n", errno);
     close(fd);
 
     printf("erno before open - %d\n", errno);   
-    fd = open("test.txt", O_RDONLY); 
+    fd = open("test.txt", O_RDWR|O_APPEND); 
     printf("erno before write - %d\n", errno);
-    std = write(fd, string, 0);
+    std = write(fd, string, strlen(string));
     printf("erno after - %d\n", errno);
     close(fd);
 
@@ -165,7 +178,7 @@ void    ft_read_test(void)
     int     my_read;
     char    buf[1000];
 
-    puts("\n**** ft_read test ****\n");
+    puts("\n" COLGREEN "**** ft_read test ****" COLRESET "\n");
 
     fd = open("read_test_1.txt", O_RDONLY);
     std_read = read(fd, buf, 12);
@@ -210,7 +223,7 @@ void    ft_strdup_test(void)
     char    *new_str;
     char    *my_new_str;
 
-    puts("\n**** ft_strdup test ****\n");
+    puts("\n" COLGREEN "**** ft_strdup test ****" COLRESET "\n");
 
     str = "test";
     new_str = strdup(str);

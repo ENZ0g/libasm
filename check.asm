@@ -4,7 +4,7 @@ section .text
 _main:
     mov     rax, 0x02000004
 	mov     rdi, 1
-    lea     rsi, [message]
+    lea     rsi, message
     mov     rdx, len
     syscall
 	call    _exit

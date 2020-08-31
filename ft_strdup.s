@@ -44,8 +44,5 @@ _ft_strdup:
             ret
 
     .error:
-        mov rbx, rax
-        call ___error
-        mov [rax], rbx
         xor rax, rax
         ret

@@ -1,4 +1,4 @@
-# libasm *in progress...*
+# libasm
 
 Проект выполнялся на Mac OS X 10.14.6 \
 Узнать вашу версию можно командой
@@ -33,7 +33,7 @@ curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
 
 ## Hello world
 
-Разберем код поздравления и познакомимся с ассемблером.
+Разберем код поздравления.
 
 ```
 1   global  _main                   ; точка входа в программу, будет вызвана процедура _main
@@ -42,7 +42,7 @@ curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
 4   _main:                          ; объявляем процедуру _main
 5       mov     rax, 0x02000004     ; помещаем в регистр rax номер системного вызова - write
 6       mov     rdi, 1              ; помещаем в регистр rdi файловый дескриптор - stdout
-7       lea     rsi, [message]      ; помещаем в регистр rsi сообщение для вывода
+7       lea     rsi, message        ; помещаем в регистр rsi сообщение для вывода
 8       mov     rdx, len            ; помещаем в регистр rdx длину сообщения
 9       syscall                     ; просим ОС выполнить то, что мы закодировали выше
 10      call    _exit               ; вызываем процедуру _exit
@@ -58,6 +58,8 @@ curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
 20  len     equ     $-message       ; объявляем len и помещаем туда длину сообщения 
 ```
 
+## Заметки
+
 Для работы нашей программы ОС выделяет память, которая будет поделена на:
 
 1. Код программы (`section .text`) - фиксированный размер
@@ -68,13 +70,46 @@ curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
 
 Иногда вместо `section` можно увидеть `segment`, это синонимы, можно использовать любое слово. Код будет работать,
 если не указывать их вообще, но они упрощают чтение кода.
+___
 
 Коды системных вызовов можно найти в файле `syscall.h`. Воспользуйтесь поиском, чтобы посмотреть его.
 
-Что касается регистров,
+___
+
+При передаче аргументов в функции, они помещаются в `rdi`, `rsi`, `rdx`, `rcx`, `r8`, `r9` соответственно
+`rax` - регистр "обмена", через него осуществляется передача значений между функциями.
+___
+
+`xor rdi, rdi` равносильно `mov rdi, 0`, но эффективней по памяти и скорости.
+___
+ Для работы со структурой важно понимать как [она хранится в памяти](https://ru.m.wikibooks.org/wiki/%D0%90%D1%81%D1%81%D0%B5%D0%BC%D0%B1%D0%BB%D0%B5%D1%80_%D0%B2_Linux_%D0%B4%D0%BB%D1%8F_%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%81%D1%82%D0%BE%D0%B2_C#%D0%A1%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D1%8B). Для доступа к элементам необходимо указывать смещение. В случае с `t_list`, который содержит два указателя, получаем:
+- размер 16 байт
+- смещение 8 байт
+
+```
+typedef struct     s_list
+{
+	void           *content;
+	struct s_list  *next;
+}                  t_list;
+
+size of t_list - 16 bytes
+offset - 8 bytes
+
+0                       8                       16
++--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+|        content        |          next         |
++--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+```
+поэтому, если адрес `t_list` в `rdi`, то:
+- для доступа в `content` используем `[rdi]`
+- доступ в `next` - `[rdi + 8]`
+
+___
 
 ### Полезные ссылки
 
 - [NASM tutorial](https://cs.lmu.edu/~ray/notes/nasmtutorial/)
 - [NASM docs (на русском)](http://www.opennet.ru/docs/RUS/nasm/contents.html)
 - [Видео уроки по FASM ассемблеру (на русском)](https://www.youtube.com/playlist?list=PLd-kTafWJCJN6OpkPAKzmqVnyCFUrDLTh)
+- [Ассемблер в Linux для программистов C](https://ru.m.wikibooks.org/wiki/%D0%90%D1%81%D1%81%D0%B5%D0%BC%D0%B1%D0%BB%D0%B5%D1%80_%D0%B2_Linux_%D0%B4%D0%BB%D1%8F_%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%81%D1%82%D0%BE%D0%B2_C)
