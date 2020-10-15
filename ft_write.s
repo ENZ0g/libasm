@@ -10,14 +10,16 @@ section .text
 ; rsi = str
 ; rdx = len
 _ft_write:
-    mov rax, 0x02000004
-    syscall
-    jc .error
-    ret
+	mov rax, 0x02000004
+	syscall
+	jc .error
+	ret
 
-    .error:
-        mov rbx, rax
-        call ___error
-        mov [rax], rbx
-        mov rax, -1
-        ret
+	.error:
+		push rbx
+		mov rbx, rax
+		call ___error
+		mov [rax], rbx
+		mov rax, -1
+		pop rbx
+		ret

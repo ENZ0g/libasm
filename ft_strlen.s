@@ -6,11 +6,11 @@ section .text
 ; | input
 ; rdi = str
 _ft_strlen:
-    xor rax, rax
-    .next_iter:
-        cmp [rdi+rax], byte 0
-        je .close
-        inc rax
-        jmp .next_iter
-    .close:
-        ret
+	xor rax, rax
+	.next_iter:
+		cmp [rdi+rax], byte 0
+		je .close
+		inc rax
+		jmp .next_iter
+	.close:
+		ret
